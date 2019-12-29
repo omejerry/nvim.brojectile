@@ -64,7 +64,7 @@ class Brojectile(object):
             with open(self.bookmarks_file, 'r') as f:
                 self.bookmarks = json.load(f)
         except json.decoder.JSONDecodeError:
-            self.error('Invalid JSON loaded, happens if you just deleted your bookmarks file')
+            self.error('Corrupt bookmarks file, initializing new one and writing from memory on next write.')
 
     def write_bookmarks(self):
         self.test_file()
