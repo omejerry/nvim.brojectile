@@ -3,18 +3,20 @@ import os
 import json
 from pathlib import Path
 
+
 @pynvim.plugin
 class Brojectile(object):
 
     def __init__(self, nvim):
-        self.nvim           = nvim
-        self.options        = {
-                'logging'       : True,
-                'bookmark_dir'  : "{}/.config/nvim/nvim_brojectile".format(os.environ["HOME"]),
-                'bookmark_file' : '.bookmarks.cache',
+        self.nvim = nvim
+        self.options = {
+            'logging': True,
+            'bookmark_dir': "{}/.config/nvim/nvim_brojectile".format(
+                os.environ["HOME"]),
+            'bookmark_file': '.bookmarks.cache',
         }
         self.get_opts()
-        self.bookmarks      = {'bookmarks': []}
+        self.bookmarks = {'bookmarks': []}
         self.bookmarks_file = "{}/{}".format(self.options['bookmark_dir'],
                                              self.options['bookmark_file'])
         self.clean_bookmarks()
@@ -22,12 +24,15 @@ class Brojectile(object):
     def get_opts(self):
         for opt in self.options.keys():
             try:
-                self.options[opt] = self.nvim.eval("Brojectile#options#{}".format(opt))
+                self.options[opt] = self.nvim.eval(
+                    "Brojectile#options#{}".format(opt))
             except Exception:
                 None
 
     def fzf_call(self, sink):
-        fzf_wrap = self.nvim.eval("fzf#wrap({{'source': Brojectile_list_bookmarks(), 'sink': '{}'}})".format(sink))
+        fzf_wrap = self.nvim.eval(
+            "fzf#wrap({{'source': Brojectile_list_bookmarks(), 'sink': '{}'}})"
+            .format(sink))
         self.nvim.call("fzf#run", fzf_wrap)
 
     def clean_bookmarks(self):
@@ -64,7 +69,9 @@ class Brojectile(object):
             with open(self.bookmarks_file, 'r') as f:
                 self.bookmarks = json.load(f)
         except json.decoder.JSONDecodeError:
-            self.error('Corrupt bookmarks file, initializing new one and writing from memory on next write.')
+            self.error(
+                'Corrupt bookmarks file, initializing new one and writing from \
+                memory on next write.')
 
     def write_bookmarks(self):
         self.test_file()
@@ -77,4 +84,3 @@ class Brojectile(object):
 
     def error(self, message):
         self.nvim.err_write("Brojectile > {} \n".format(message))
-

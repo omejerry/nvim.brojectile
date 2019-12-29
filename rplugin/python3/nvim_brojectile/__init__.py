@@ -1,6 +1,7 @@
 import pynvim
 from .brojectile import Brojectile
 
+
 @pynvim.plugin
 class BrojectileHandler(object):
     def __init__(self, nvim):
@@ -14,7 +15,8 @@ class BrojectileHandler(object):
         elif len(args) == 0:
             sinkcommand = 'BtileCD'
         else:
-            self.Brojectile.error('BtileList takes 1 or 0 arguments, showing normal list')
+            self.Brojectile.error(
+                'BtileList takes 1 or 0 arguments, showing normal list')
             sinkcommand = 'BtileCD'
 
         self.nvim.async_call(self.Brojectile.fzf_call, sinkcommand)
