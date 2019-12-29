@@ -26,54 +26,6 @@ class Brojectile(object):
             except Exception:
                 None
 
-    @pynvim.command('BtileList', nargs='*', sync=False)
-    def read_Brojectile_bookmarks(self, args):
-        if len(args) == 1:
-            wrapcommand = "BtileCD {}".format(args[0])
-        elif len(args) == 0:
-            wrapcommand = 'BtileCD'
-        else:
-            self.error('BtileList takes 1 or 0 arguments, showing normal list')
-            wrapcommand = 'BtileCD'
-
-        self.nvim.async_call(self.fzf_call, wrapcommand)
-
-    @pynvim.command('BtileAdd', sync=False)
-    def add_Brojectile_pwd(self):
-        pwd = self.nvim.command_output('pwd')
-        self.add_bookmark(pwd)
-
-    @pynvim.command('BtileDel', sync=False)
-    def del_Brojectile_pwd(self):
-        self.nvim.async_call(self.fzf_call, 'BtileRM')
-
-    @pynvim.command('BtileRM', nargs=1, sync=True)
-    def delete_entry(self, args):
-        path = str(args).strip("[']").replace(' ', '').replace('\\', '')
-        self.read_bookmarks()
-        while path in self.bookmarks['bookmarks']:
-            self.bookmarks['bookmarks'].remove(path)
-        self.write_bookmarks()
-
-    @pynvim.command('BtileCD', nargs='*', sync=False)
-    def change_directory(self, args):
-        if len(args) > 1:
-            path = args[1]
-            command = True
-        else:
-            path = args[0]
-            command = False
-
-        path = str(path).strip("[']").replace(' ', '').replace('\\', '')
-        self.nvim.chdir(path)
-        if command:
-            self.nvim.command(args[0])
-
-    @pynvim.function('Brojectile_list_bookmarks', sync=True)
-    def list_bookmarks(self, args):
-        self.read_bookmarks()
-        return self.bookmarks['bookmarks']
-
     def fzf_call(self, sink):
         fzf_wrap = self.nvim.eval("fzf#wrap({{'source': Brojectile_list_bookmarks(), 'sink': '{}'}})".format(sink))
         self.nvim.call("fzf#run", fzf_wrap)
@@ -99,6 +51,12 @@ class Brojectile(object):
         if not os.path.isfile(self.bookmarks_file):
             Path(self.bookmarks_file).touch()
             self.write_bookmarks()
+
+    def delete_bookmark(self, bookmark):
+        self.read_bookmarks()
+        while bookmark in self.bookmarks['bookmarks']:
+            self.bookmarks['bookmarks'].remove(bookmark)
+        self.write_bookmarks()
 
     def read_bookmarks(self):
         self.test_file()
