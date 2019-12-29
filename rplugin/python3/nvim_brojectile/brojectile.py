@@ -14,11 +14,10 @@ class Brojectile(object):
                 'bookmark_file' : '.bookmarks.cache',
                 'cd_command'    : 'FZF',
         }
+        self.get_opts()
         self.bookmarks      = {'bookmarks': []}
         self.bookmarks_file = "{}/{}".format(self.options['bookmark_dir'],
                                              self.options['bookmark_file'])
-
-        self.get_opts()
         self.clean_bookmarks()
 
     def get_opts(self):
