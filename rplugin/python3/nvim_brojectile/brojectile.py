@@ -34,7 +34,7 @@ class Brojectile(object):
             wrapcommand = 'BtileCDCommand'
         else:
             wrapcommand = 'BtileCD'
-        self.nvim.async_call('Brojectile_fzf_call', wrapcommand)
+        self.nvim.async_call(self.fzf_call(wrapcommand))
 
     @pynvim.command('BtileAdd', sync=False)
     def add_Brojectile_pwd(self):
@@ -43,7 +43,7 @@ class Brojectile(object):
 
     @pynvim.command('BtileDel', sync=False)
     def del_Brojectile_pwd(self):
-        self.nvim.async_call('Brojectile_fzf_call', 'BtileRM')
+        self.nvim.async_call(self.fzf_call('BtileRM'))
 
     @pynvim.command('BtileRM', nargs=1, sync=True)
     def delete_entry(self, args):
@@ -67,7 +67,6 @@ class Brojectile(object):
         self.read_bookmarks()
         return self.bookmarks['bookmarks']
 
-    @pynvim.function('Brojectile_fzf_call', sync=False)
     def fzf_call(self, sink):
         fzf_wrap = self.nvim.eval("fzf#wrap({'source': Brojectile_list_bookmarks(), 'sink': {}})".format(sink))
         self.nvim.async_call("fzf#run", fzf_wrap)
