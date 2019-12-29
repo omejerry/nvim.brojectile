@@ -47,6 +47,7 @@ class Brojectile(object):
     @pynvim.command('BtileRM', nargs=1, sync=True)
     def delete_entry(self, args):
         path = str(args).strip("[']").replace(' ', '').replace('\\', '')
+        self.read_bookmarks()
         while path in self.bookmarks['bookmarks']:
             self.bookmarks['bookmarks'].remove(path)
         self.write_bookmarks()
