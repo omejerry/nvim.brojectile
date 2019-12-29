@@ -36,7 +36,6 @@ class Brojectile(object):
             wrapcommand = 'BtileCD'
         self.nvim.async_call('fzf_call', wrapcommand)
 
-
     @pynvim.command('BtileAdd', sync=False)
     def add_Brojectile_pwd(self):
         pwd = self.nvim.command_output('pwd')
