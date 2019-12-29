@@ -69,7 +69,7 @@ class Brojectile(object):
 
     def fzf_call(self, sink):
         fzf_wrap = self.nvim.eval("fzf#wrap({{'source': Brojectile_list_bookmarks(), 'sink': '{}'}})".format(sink))
-        self.nvim.async_call("fzf#run", fzf_wrap)
+        self.nvim.call("fzf#run", fzf_wrap)
 
     def clean_bookmarks(self):
         self.read_bookmarks()
