@@ -34,7 +34,7 @@ class Brojectile(object):
             wrapcommand = 'BtileCDCommand'
         else:
             wrapcommand = 'BtileCD'
-        self.nvim.async_call(self.fzf_call(wrapcommand))
+        self.nvim.async_call(self.fzf_call, wrapcommand)
 
     @pynvim.command('BtileAdd', sync=False)
     def add_Brojectile_pwd(self):
@@ -43,7 +43,7 @@ class Brojectile(object):
 
     @pynvim.command('BtileDel', sync=False)
     def del_Brojectile_pwd(self):
-        self.nvim.async_call(self.fzf_call('BtileRM'))
+        self.nvim.async_call(self.fzf_call, 'BtileRM')
 
     @pynvim.command('BtileRM', nargs=1, sync=True)
     def delete_entry(self, args):
