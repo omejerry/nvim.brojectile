@@ -10,14 +10,14 @@ class BrojectileHandler(object):
     @pynvim.command('BtileList', nargs='*', sync=False)
     def read_Brojectile_bookmarks(self, args):
         if len(args) == 1:
-            wrapcommand = "BtileCD {}".format(args[0])
+            sinkcommand = "BtileCD {}".format(args[0])
         elif len(args) == 0:
-            wrapcommand = 'BtileCD'
+            sinkcommand = 'BtileCD'
         else:
             self.Brojectile.error('BtileList takes 1 or 0 arguments, showing normal list')
-            wrapcommand = 'BtileCD'
+            sinkcommand = 'BtileCD'
 
-        self.nvim.async_call(self.Brojectile.fzf_call, wrapcommand)
+        self.nvim.async_call(self.Brojectile.fzf_call, sinkcommand)
 
     @pynvim.command('BtileAdd', sync=False)
     def add_Brojectile_pwd(self):
@@ -30,7 +30,7 @@ class BrojectileHandler(object):
 
     @pynvim.command('BtileRM', nargs=1, sync=True)
     def delete_entry(self, args):
-        path = str(args).strip("[']").replace(' ', '').replace('\\', '')
+        path = str(args[0])
         self.Brojectile.delete_bookmark(path)
 
     @pynvim.command('BtileCD', nargs='*', sync=False)
@@ -42,7 +42,6 @@ class BrojectileHandler(object):
             path = args[0]
             command = False
 
-        path = str(path).strip("[']").replace(' ', '').replace('\\', '')
         self.nvim.chdir(path)
         if command:
             self.nvim.command(args[0])
