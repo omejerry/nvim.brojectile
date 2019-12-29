@@ -19,7 +19,7 @@ class BrojectileHandler(object):
 
         self.nvim.async_call(self.Brojectile.fzf_call, sinkcommand)
 
-    @pynvim.command('BtileAdd', sync=False)
+    @pynvim.command('BtileAdd', sync=True)
     def add_Brojectile_pwd(self):
         pwd = self.nvim.command_output('pwd')
         self.Brojectile.add_bookmark(pwd)
