@@ -10,8 +10,9 @@ For now it just switches the current working directory, allowing you to find fil
 ## Features
 
 * Save current working directory as bookmark.
-* Fuzzysearch through [fzf.vim](https://github.com/junegunn/fzf.vim)
-* Cleans non-existing directories on start-up
+* Fuzzysearch through [fzf.vim](https://github.com/junegunn/fzf.vim).
+* Cleans non-existing directories on start-up.
+* Ability to define custom command after changing directory.
 
 ## Installation
 
@@ -33,7 +34,6 @@ The following options can be set through your .vimrc, with the defaults shown.
 let g:Brojectile#options#logging = 1 "boolean
 let g:Brojectile#options#bookmark_dir = '~/.config/nvim/nvim_brojectile' "Path/string
 let g:Brojectile#options#bookmark_file = '.bookmarks.cache' "String
-let g:Brojectile#options#cd_command = 'FZF' "String, vim command
 ```
 
 ## Commands
@@ -44,19 +44,16 @@ Nvim.Brojectile doesn't set any shortcuts by default. So you should map the comm
 ```
 :nnoremap <leader>ba :BtileAdd<CR>
 :nnoremap <leader>bl :BtileList<CR>
-:nnoremap <leader>bc :BtileList 1<CR>
+:nnoremap <leader>bf :BtileList FZF<CR> "Execute FZF after CD-ing to selected directory
 ```
 
-|Command          |Description                                                                                    |
-|-----------------|-----------------------------------------------------------------------------------------------|
-|:BtileAdd        |Adds the current working directory to the bookmarklist by reading PWD. Doesn't add duplicates. |
-|:BtileList       |List the available bookmarks in a fuzzysearch window. Takes an optional boolean:               |
-|                 |True: Execute cd_command after changing directory.                                             |
-|                 |False: Just change directory on select.                                                        |
-|:BtileDel        |Lists the available bookmarks in a fuzzysearch window. Delete's bookmark on selection.         |
-|:BtileRM         |Removes a given path from the list. Takes a string (path) as argument. Called by :BtileDel.    |
-|:BtileCD         |Changes current direcroy. Takes a string (path) as argument. Called on fuzzy selection.        |
-|:BtileCDCommand  |Change directory and execute cd_command.                                                       |
+|Command            |Description                                                                                                    |
+|-------------------|---------------------------------------------------------------------------------------------------------------|
+|:BtileAdd          |Adds the current working directory to the bookmarklist by reading PWD. Doesn't add duplicates.                 |
+|:BtileList $String |List the available bookmarks in a fuzzysearch window. Takes an optional String/vimcommand to execute after CD. |
+|:BtileDel          |Lists the available bookmarks in a fuzzysearch window. Delete's bookmark on selection.                         |
+|:BtileRM           |Removes a given path from the list. Takes a string (path) as argument. Called by :BtileDel.                    |
+|:BtileCD           |Changes current direcroy. Takes a string (path) as argument. Called on fuzzy selection.                        |
 
 ## Functions
 

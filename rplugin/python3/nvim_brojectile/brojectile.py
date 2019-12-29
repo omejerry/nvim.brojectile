@@ -12,7 +12,6 @@ class Brojectile(object):
                 'logging'       : True,
                 'bookmark_dir'  : "{}/.config/nvim/nvim_brojectile".format(os.environ["HOME"]),
                 'bookmark_file' : '.bookmarks.cache',
-                'cd_command'    : 'FZF',
         }
         self.get_opts()
         self.bookmarks      = {'bookmarks': []}
@@ -28,11 +27,15 @@ class Brojectile(object):
                 None
 
     @pynvim.command('BtileList', nargs='*', sync=False)
-    def read_Brojectile_bookmarks(self, command_after_cd=False):
-        if command_after_cd:
-            wrapcommand = 'BtileCDCommand'
-        else:
+    def read_Brojectile_bookmarks(self, args):
+        if len(args) == 1:
+            wrapcommand = "BtileCD {}".format(args[0])
+        elif len(args) == 0:
             wrapcommand = 'BtileCD'
+        else:
+            self.error('BtileList takes 1 or 0 arguments, showing normal list')
+            wrapcommand = 'BtileCD'
+
         self.nvim.async_call(self.fzf_call, wrapcommand)
 
     @pynvim.command('BtileAdd', sync=False)
@@ -52,15 +55,19 @@ class Brojectile(object):
             self.bookmarks['bookmarks'].remove(path)
         self.write_bookmarks()
 
-    @pynvim.command('BtileCD', nargs=1, sync=False)
+    @pynvim.command('BtileCD', nargs='*', sync=False)
     def change_directory(self, args):
-        path = str(args).strip("[']").replace(' ', '').replace('\\', '')
-        self.nvim.chdir(path)
+        if len(args) > 1:
+            path = args[1]
+            command = True
+        else:
+            path = args[0]
+            command = False
 
-    @pynvim.command('BtileCDCommand', nargs=1, sync=False)
-    def change_directory_and_command(self, args):
-        self.change_directory(args)
-        self.nvim.command(self.options['cd_command'])
+        path = str(path).strip("[']").replace(' ', '').replace('\\', '')
+        self.nvim.chdir(path)
+        if command:
+            self.nvim.command(args[0])
 
     @pynvim.function('Brojectile_list_bookmarks', sync=True)
     def list_bookmarks(self, args):
