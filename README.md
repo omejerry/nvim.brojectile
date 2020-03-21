@@ -24,7 +24,7 @@ For now it just switches the current working directory, allowing you to find fil
 ## Vim-plug
 
 ```
-Plug 'https://gitlab.com/jwiersma/nvim.brojectile.git', { 'do': ':UpdateRemotePlugins' }
+Plug 'omejerry/nvim.brojectile', { 'do': ':UpdateRemotePlugins' }
 ```
 
 ## Options
